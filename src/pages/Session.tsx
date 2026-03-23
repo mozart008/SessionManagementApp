@@ -30,7 +30,12 @@ export default function SessionPage() {
 
   return (
     <main id="session-page">
-      {isBooking && <BookSession onDone={handleStopBooking} />}
+      {isBooking && (
+        <BookSession
+          onDone={handleStopBooking}
+          selectedSession={loadedSession}
+        />
+      )}
 
       <article>
         <header>
