@@ -13,6 +13,10 @@ const UpcomingSessions = ({ onClose }: UpcomingSessionsProps) => {
   const sessionContext = useSessionContext();
   const hasSessions = sessionContext.upcomingSessions.length > 0;
 
+  const handleOnCancelSession = (id: string) => {
+    sessionContext.cancelSession(id);
+  };
+
   const handleModalShow = () => {
     if (modal?.current) {
       modal.current.open();
@@ -30,7 +34,10 @@ const UpcomingSessions = ({ onClose }: UpcomingSessionsProps) => {
         <ul>
           {sessionContext.upcomingSessions.map((session) => (
             <li key={session.id}>
-              <UpcomingSession session={session} />
+              <UpcomingSession
+                session={session}
+                onCancel={() => handleOnCancelSession(session.id)}
+              />
             </li>
           ))}
         </ul>

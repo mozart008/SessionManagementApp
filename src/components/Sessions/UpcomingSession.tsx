@@ -3,11 +3,10 @@ import { Button } from '../reusable/Button';
 
 type UpcomingSessionProps = {
   session: Session;
+  onCancel: () => void;
 };
 
-const UpcomingSession = ({ session }: UpcomingSessionProps) => {
-  const onCancel = () => {};
-
+const UpcomingSession = ({ session, onCancel }: UpcomingSessionProps) => {
   return (
     <article className="upcoming-session">
       <div>
