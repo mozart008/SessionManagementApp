@@ -14,13 +14,21 @@ type SessionState = {
   upcomingSessions: Session[];
 };
 
-type SessionAction = {
+type BookSessionAction = {
   type: 'BOOK_SESSION';
   session: Session;
 };
 
+type CancelSessionAction = {
+  type: 'CANCEL_SESSION';
+  id: string;
+};
+
+type SessionAction = BookSessionAction | CancelSessionAction;
+
 type SessionContextValue = SessionState & {
   bookSession: (session: Session) => void;
+  cancelSession: (id: string) => void;
 };
 
 export const SessionsContext = createContext<SessionContextValue | null>(null);
@@ -39,6 +47,14 @@ const sessionReducer = (
       };
   }
 
+  if (action.type === 'CANCEL_SESSION') {
+    return {
+      upcomingSessions: state.upcomingSessions.filter(
+        (s) => s.id !== action.id,
+      ),
+    };
+  }
+
   return state;
 };
 
@@ -52,12 +68,17 @@ const SessionContextProvider = ({ children }: SessionContextProvider) => {
   });
 
   const bookSession = (session: Session) => {
-    dispatch({ type: 'BOOK_SESSION', session: session });
+    dispatch({ type: 'BOOK_SESSION', session });
   };
 
-  const context = {
+  const cancelSession = (id: string) => {
+    dispatch({ type: 'CANCEL_SESSION', id });
+  };
+
+  const context: SessionContextValue = {
     upcomingSessions: sessionState.upcomingSessions,
     bookSession,
+    cancelSession,
   };
 
   return (
